@@ -17,7 +17,7 @@ public class Takoscript : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("pos"+ transform.position);
+        Debug.Log("pos" + transform.position);
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class Takoscript : MonoBehaviour
     {
         mouseonScreenpos = Input.mousePosition;
         mouseonScreenpos.z = 1;
-        
+
         transform2cursor = Camera.main.ScreenToWorldPoint(mouseonScreenpos);
 
 
@@ -34,7 +34,8 @@ public class Takoscript : MonoBehaviour
         float cos = Mathf.Cos(angle * Mathf.Deg2Rad);
         float sin = Mathf.Sin(angle * Mathf.Deg2Rad);
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0))
+        {
             x_speed += cos * Time.deltaTime * force;
             y_speed += sin * Time.deltaTime * force;
         }
@@ -43,10 +44,11 @@ public class Takoscript : MonoBehaviour
         transform.position = transform.position + new Vector3(x_speed, y_speed, 0);
     }
 
-    Quaternion RotateObject(Vector3 objectposition, Vector3 towards) {
+    Quaternion RotateObject(Vector3 objectposition, Vector3 towards)
+    {
         float delta_x = towards.x - objectposition.x;
         float delta_y = towards.y - objectposition.y;
-        angle = Mathf.Atan2(delta_y, delta_x ) * Mathf.Rad2Deg;
+        angle = Mathf.Atan2(delta_y, delta_x) * Mathf.Rad2Deg;
 
         return Quaternion.Euler(new Vector3(0, 0, angle));
     }
@@ -54,7 +56,6 @@ public class Takoscript : MonoBehaviour
     float Force(Vector3 objectposition, Vector3 towards, float gConstant, float mass)
     {
         float distance = Vector3.Distance(objectposition, towards);
-        return  gConstant * (mass/distance);
+        return gConstant * (mass / distance);
     }
 }
- 
