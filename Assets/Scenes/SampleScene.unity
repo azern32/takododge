@@ -440,7 +440,7 @@ Transform:
   m_GameObject: {fileID: 1127244863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 160, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -551,14 +551,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00072f719033a5b409d083b76a8f58dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 0
-  speed_x: 0
-  accel_x: 0
+  playerDistance: 0
   radius: 0
+  accel: 0
+  current_speed: 0
+  max_speed: 0
+  direction: 1
   mouseOnScreenPos: {x: 0, y: 0, z: 0}
   transform2Cursor: {x: 0, y: 0, z: 0}
-  gravityPower: 10
-  mass: 50
   gravitySource: {fileID: 2092611344}
   gravitySourcePos: {x: 0, y: 0, z: 0}
 --- !u!1 &2092611344
