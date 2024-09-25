@@ -448,6 +448,8 @@ MonoBehaviour:
   deadlies: {fileID: 5261296165158473168, guid: 88ab053c8805e3646a147b50164b051d, type: 3}
   spawnrate_min: 1
   spawnrate_max: 3
+  spawn_x_min: 0
+  spawn_x_max: 0
 --- !u!4 &1794632748
 Transform:
   m_ObjectHideFlags: 0
