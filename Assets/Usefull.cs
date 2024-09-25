@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Usefull : MonoBehaviour
+public class Usefull
 {
     public Vector3 ObjectPosOnCamera(Vector3 objectPos)
     {

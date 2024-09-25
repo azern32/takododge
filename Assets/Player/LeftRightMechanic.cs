@@ -21,15 +21,10 @@ public class LeftRightMechanic : MonoBehaviour
     public Vector3 gravitySourcePos;
 
 
-    Usefull tesclass = new Usefull();
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Tes" + tesclass.Distance2D(gravitySourcePos, transform.position));
-
-
-
         radius = (int)Camera.main.ScreenToWorldPoint(new Vector3(Screen.width * 3 / 4, 0, 0)).x;
         Debug.Log("Test " + Mathf.Cos(Mathf.PI / 2));
         Debug.Log("Height " + Camera.main.pixelHeight);
@@ -37,7 +32,6 @@ public class LeftRightMechanic : MonoBehaviour
         max_speed = 10f;
         current_speed = 0;
 
-        // float tes = Usefull.(transform.position, gravitySourcePos);
     }
 
     // Update is called once per frame
@@ -49,12 +43,12 @@ public class LeftRightMechanic : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            accel -= 15 * Time.deltaTime;
+            accel -= 20 * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            accel += 15 * Time.deltaTime;
+            accel += 20 * Time.deltaTime;
         }
 
         current_speed += accel;
