@@ -5,9 +5,10 @@ using UnityEngine;
 public class MoveGravitySource : MonoBehaviour
 {
     Usefull helper = new Usefull();
+    [SerializeField] AnimationCurve curve;
     public float minx;
     public float maxx;
-
+    public float newlocation_x;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,8 @@ public class MoveGravitySource : MonoBehaviour
         minx = helper.ObjectPosOnCamera(new Vector3(10, 0, 0)).x;
 
         StartCoroutine(NextSpawn());
+
+        Debug.Log("Curve val: " + curve.Evaluate(.4f));
     }
 
     // Update is called once per frame
@@ -28,10 +31,9 @@ public class MoveGravitySource : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3);
-            float rand = Random.Range(minx, maxx);
-            Debug.Log("Terjadi sesuatu" + rand);
-            transform.position = new Vector3(rand, transform.position.y, transform.position.z);
+            yield return new WaitForSeconds(5);
+            newlocation_x = Random.Range(minx, maxx);
+            transform.position = new Vector3(newlocation_x, transform.position.y, transform.position.z);
         }
     }
 }

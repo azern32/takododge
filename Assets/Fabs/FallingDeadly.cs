@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FallingDeadly : MonoBehaviour
 {
-    public float fallingspeed;
-    public float deadzone = -140;
+    [SerializeField] private float fallingspeed;
+    [SerializeField] private float deadzone = -140;
+
+    public GameObject player;
     // Start is called before the first frame update
     void Start()
     {
-        fallingspeed = Random.Range(40, 60);
+        fallingspeed = Random.Range(120, 300);
     }
 
     // Update is called once per frame
@@ -19,7 +21,6 @@ public class FallingDeadly : MonoBehaviour
 
         if (transform.position.y < deadzone)
         {
-            Debug.Log("ID: " + gameObject.GetInstanceID() + ", Current falling speed: " + fallingspeed);
             Destroy(gameObject);
         }
     }

@@ -13,14 +13,13 @@ public class LeftRightMechanic : MonoBehaviour
     [SerializeField] private float max_speed;
     [SerializeField] private int direction = 1;
 
-
-    // public Vector3 mouseOnScreenPos;
-    // public Vector3 transform2Cursor;
+    public float initscore = 0;
 
     public GameObject gravitySource;
     public Vector3 gravitySourcePos;
+    public Rigidbody2D rig2d;
 
-
+    public Stats logic;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +31,7 @@ public class LeftRightMechanic : MonoBehaviour
         max_speed = 10f;
         current_speed = 0;
 
+        logic = GameObject.FindGameObjectWithTag("Stats").GetComponent<Stats>();
     }
 
     // Update is called once per frame
@@ -41,21 +41,32 @@ public class LeftRightMechanic : MonoBehaviour
         direction = transform.position.x >= gravitySourcePos.x ? 1 : -1;
         accel = 2 * direction * Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             accel -= 20 * Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             accel += 20 * Time.deltaTime;
         }
 
         current_speed += accel;
         transform.position += new Vector3(Mathf.Min(current_speed, max_speed), 0, 0);
+
+        initscore += Time.deltaTime;
+        if ((int)initscore == 1)
+        {
+            initscore = 0;
+            logic.Add1Score();
+        }
     }
 
-    // Untuk ubah posisi dari kamera ke posisi pixel perfect
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        logic.GameOver();
+        gameObject.SetActive(false);
+    }
 
 
 }

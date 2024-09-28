@@ -5,8 +5,8 @@ using UnityEngine;
 public class SpawnDeadly : MonoBehaviour
 {
     public GameObject deadlies;
-    public float spawnrate_min = 2;
-    public float spawnrate_max = 4;
+    public float spawnrate_min = .8f;
+    public float spawnrate_max = 1.2f;
     public float spawn_x_min;
     public float spawn_x_max;
 
@@ -53,6 +53,8 @@ public class SpawnDeadly : MonoBehaviour
             float spawnrate = Random.Range(spawnrate_min, spawnrate_max);
 
             yield return new WaitForSeconds(spawnrate);
+            Spawn();
+            yield return new WaitForSeconds(1);
             Spawn();
         }
     }
