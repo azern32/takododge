@@ -31,4 +31,9 @@ public class Stats : MonoBehaviour
         gameoverScreen.SetActive(true);
         Time.timeScale = 0;
     }
+
+    public void Mainmenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
 }

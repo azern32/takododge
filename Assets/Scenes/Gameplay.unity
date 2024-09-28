@@ -1811,7 +1811,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2123556228}
         m_TargetAssemblyTypeName: Stats, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: Mainmenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
