@@ -1,0 +1,43 @@
+# docker-compose.yml
+# version: "3.9"
+
+services:
+  elysia:
+    image: "oven/bun:latest"
+    container_name: "elysia_unity"
+    restart: "unless-stopped"
+    networks:
+      - dev-proxy
+    # override default entrypoint allows us to do `bun install` before serving
+    entrypoint: []
+    # execute bun install before we start the dev server in watch mode
+    command: "/bin/sh -c 'bun install && bun run --watch src/index.ts'"
+    # setup a host mounted volume to sync changes to the container
+    volumes:
+      - "./app:/home/bun/app"
+    # expose the right ports
+    # ports: ["7777:3000"]
+    labels:
+      - "traefik.http.routers.elysia-http.entrypoints=web"
+      - "traefik.http.routers.elysia-http.rule=Host(`elysia.docker.localhost`)"
+      - "traefik.http.services.elysia.loadbalancer.server.port=3000"
+      # - "traefik.http.routers.elysia-http.middlewares=elysia-https"
+      # - "traefik.http.middlewares.elysia-https.redirectscheme.scheme=https"
+      # - "traefik.http.routers.elysia.entrypoints=websecure"
+      # - "traefik.http.routers.elysia.rule=Host(`elysia.docker.localhost`)"
+      # - "traefik.http.routers.elysia.tls=true"
+      - "traefik.docker.network=dev-proxy"
+
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
+
+networks:
+  dev-proxy:
+    external: true
