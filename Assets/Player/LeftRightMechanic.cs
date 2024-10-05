@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +15,8 @@ public class LeftRightMechanic : MonoBehaviour
     [SerializeField] private int direction = 1;
 
     public float initscore = 0;
+    public float force;
+
 
     public GameObject gravitySource;
     public Vector3 gravitySourcePos;
@@ -28,7 +31,7 @@ public class LeftRightMechanic : MonoBehaviour
         Debug.Log("Test " + Mathf.Cos(Mathf.PI / 2));
         Debug.Log("Height " + Camera.main.pixelHeight);
         Debug.Log("Screen to world " + radius);
-        max_speed = 10f;
+        max_speed = 10;
         current_speed = 0;
 
         logic = GameObject.FindGameObjectWithTag("Stats").GetComponent<Stats>();
@@ -39,20 +42,20 @@ public class LeftRightMechanic : MonoBehaviour
     {
         gravitySourcePos = gravitySource.transform.position;
         direction = transform.position.x >= gravitySourcePos.x ? 1 : -1;
-        accel = 2 * direction * Time.deltaTime;
+        accel = 2 * direction;
 
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            accel -= 20 * Time.deltaTime;
+            accel -= force;
         }
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            accel += 20 * Time.deltaTime;
+            accel += force;
         }
 
-        current_speed += accel;
-        transform.position += new Vector3(Mathf.Min(current_speed, max_speed), 0, 0);
+        current_speed += accel * Time.deltaTime;
+        transform.position += new Vector3(current_speed, 0, 0);
 
         initscore += Time.deltaTime;
         if ((int)initscore == 1)
@@ -67,7 +70,6 @@ public class LeftRightMechanic : MonoBehaviour
         logic.GameOver();
         gameObject.SetActive(false);
     }
-
 
 }
 

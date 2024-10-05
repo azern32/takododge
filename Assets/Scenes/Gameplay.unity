@@ -989,7 +989,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127244863}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7b149ca60f74fe4aa7b3348fd247a9f, type: 3}
   m_Name: 
@@ -1011,8 +1011,9 @@ MonoBehaviour:
   accel: 0
   current_speed: 0
   max_speed: 0
-  direction: 1
+  direction: 0
   initscore: 0
+  force: 10
   gravitySource: {fileID: 2092611344}
   gravitySourcePos: {x: 0, y: 0, z: 0}
   rig2d: {fileID: 1127244866}
@@ -1597,7 +1598,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794632746}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af9137496cc41b04dad8046803217e31, type: 3}
   m_Name: 
