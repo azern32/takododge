@@ -8,6 +8,7 @@ services:
     restart: "unless-stopped"
     networks:
       - dev-proxy
+      - mongodbnet
     # override default entrypoint allows us to do `bun install` before serving
     entrypoint: []
     # execute bun install before we start the dev server in watch mode
@@ -29,15 +30,32 @@ services:
       - "traefik.docker.network=dev-proxy"
 
   mongodb:
-    image: mongodb/mongodb-community-server:6.0-ubi8
+    image: bitnami/mongodb:latest
+    container_name: "mongo_unity"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - MONGODB_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PASS}
     volumes:
-      - type: bind
-        source: ./data
-        target: /data/db
+      - "./data:/data/db"
+      # - type: volume
+      #   source: ./data
+      #   target: /data/db
+    labels:
+      - "traefik.http.routers.mongo-http.entrypoints=web"
+      - "traefik.http.routers.mongo-http.rule=Host(`mongo.docker.localhost`)"
+      - "traefik.http.services.mongo.loadbalancer.server.port=27017"
+      # - "traefik.http.routers.mongo-http.middlewares=mongo-https"
+      # - "traefik.http.middlewares.mongo-https.redirectscheme.scheme=https"
+      # - "traefik.http.routers.mongo.entrypoints=websecure"
+      # - "traefik.http.routers.mongo.rule=Host(`mongo.docker.localhost`)"
+      # - "traefik.http.routers.mongo.tls=true"
+      - "traefik.docker.network=dev-proxy"
+    networks:
+      - mongodbnet
 
 networks:
   dev-proxy:
     external: true
+  mongodbnet:
+# volumes:
+#   data:
