@@ -1,0 +1,28 @@
+services:
+  nginx:
+    image: nginx
+    container_name: unity_nginx
+    working_dir: /usr/share/nginx/html
+    volumes:
+      # - ./templates:/etc/nginx/templates
+      - ../Builds/Web:/usr/share/nginx/html:rw
+    ports:
+      - "34:80"
+    environment:
+      #   - NGINX_HOST=foobar.com
+      - NGINX_PORT=80
+    labels:
+      - "traefik.http.routers.unity-http.entrypoints=web"
+      - "traefik.http.routers.unity-http.rule=Host(`unity.docker.localhost`)"
+      - "traefik.http.routers.unity-http.middlewares=unity-https"
+      - "traefik.http.middlewares.unity-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.unity.entrypoints=websecure"
+      - "traefik.http.routers.unity.rule=Host(`unity.docker.localhost`)"
+      - "traefik.http.routers.unity.tls=true"
+      - "traefik.docker.network=dev-proxy"
+    networks:
+      - dev-proxy
+
+networks:
+  dev-proxy:
+    external: true
