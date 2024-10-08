@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 public class Stats : MonoBehaviour
 {
     public int playerScore = 0;
+    public float fps;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI fpsText;
     public GameObject gameoverScreen;
 
     [ContextMenu("Score +1")] public void Add1Score() { AddScore(1); }
@@ -35,5 +37,11 @@ public class Stats : MonoBehaviour
     public void Mainmenu()
     {
         SceneManager.LoadScene("Main Menu");
+    }
+
+    void Update()
+    {
+        fps = Mathf.Round(1 / Time.unscaledDeltaTime);
+        fpsText.text = fps.ToString();
     }
 }

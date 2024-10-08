@@ -43,6 +43,7 @@ public class LeftRightMechanic : MonoBehaviour
         gravitySourcePos = gravitySource.transform.position;
         direction = transform.position.x >= gravitySourcePos.x ? 1 : -1;
         accel = 2 * direction;
+        // direction *= 2;
 
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
@@ -54,8 +55,8 @@ public class LeftRightMechanic : MonoBehaviour
             accel += force;
         }
 
-        current_speed += accel * Time.deltaTime;
-        transform.position += new Vector3(current_speed, 0, 0);
+        // current_speed += accel * Time.deltaTime / 2;
+        // transform.position += new Vector3(current_speed, 0, 0);
 
         initscore += Time.deltaTime;
         if ((int)initscore == 1)
@@ -64,6 +65,13 @@ public class LeftRightMechanic : MonoBehaviour
             logic.Add1Score();
         }
     }
+
+    void FixedUpdate()
+    {
+        current_speed += accel * Time.deltaTime;
+        transform.position += new Vector3(current_speed, 0, 0);
+    }
+
 
     private void OnCollisionEnter2D(Collision2D other)
     {
