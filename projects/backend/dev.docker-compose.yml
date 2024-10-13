@@ -29,29 +29,7 @@ services:
       # - "traefik.http.routers.elysia.tls=true"
       - "traefik.docker.network=dev-proxy"
 
-  mongodb:
-    image: bitnami/mongodb:latest
-    container_name: "mongo_unity"
-    environment:
-      - MONGODB_INITDB_ROOT_USERNAME=${MONGO_USER}
-      - MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PASS}
-    volumes:
-      - "./data:/data/db"
-      # - type: volume
-      #   source: ./data
-      #   target: /data/db
-    labels:
-      - "traefik.http.routers.mongo-http.entrypoints=web"
-      - "traefik.http.routers.mongo-http.rule=Host(`mongo.docker.localhost`)"
-      - "traefik.http.services.mongo.loadbalancer.server.port=27017"
-      # - "traefik.http.routers.mongo-http.middlewares=mongo-https"
-      # - "traefik.http.middlewares.mongo-https.redirectscheme.scheme=https"
-      # - "traefik.http.routers.mongo.entrypoints=websecure"
-      # - "traefik.http.routers.mongo.rule=Host(`mongo.docker.localhost`)"
-      # - "traefik.http.routers.mongo.tls=true"
-      - "traefik.docker.network=dev-proxy"
-    networks:
-      - mongodbnet
+  postgres:
 
 networks:
   dev-proxy:
