@@ -5,7 +5,6 @@ services:
     restart: "unless-stopped"
     networks:
       - dev-proxy
-      - mongodbnet
     # override default entrypoint allows us to do `bun install` before serving
     entrypoint: []
     # execute bun install before we start the dev server in watch mode
@@ -31,6 +30,5 @@ services:
 networks:
   dev-proxy:
     external: true
-  mongodbnet:
 # volumes:
 #   data:

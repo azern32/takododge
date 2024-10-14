@@ -9,6 +9,9 @@ public class SpawnDeadly : MonoBehaviour
     public float spawnrate_max = 1.2f;
     public float spawn_x_min;
     public float spawn_x_max;
+    public Stats logic;
+
+    public int scoreToSpawnMore;
 
     Usefull helper = new Usefull();
 
@@ -16,6 +19,8 @@ public class SpawnDeadly : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        logic = GameObject.FindGameObjectWithTag("Stats").GetComponent<Stats>();
+
         float aWidth = helper.ObjectPosOnCamera(new Vector3(Screen.width - 20, 0, 0)).x;
 
         spawn_x_min = -aWidth;
@@ -23,22 +28,11 @@ public class SpawnDeadly : MonoBehaviour
 
         Spawn();
         StartCoroutine(NextSpawn());
+        StartCoroutine(SpawnMore(scoreToSpawnMore));
     }
 
     // Update is called once per frame
-    // void Update()
-    // {
-    //     float spawnrate = spawnrate_min;
-    //     if (timer < spawnrate)
-    //     {
-    //         timer += Time.deltaTime;
-    //     }
-    //     else
-    //     {
-    //         Spawn();
-    //         timer = 0;
-    //     }
-    // }
+    // void Update(){}
 
     void Spawn()
     {
@@ -54,8 +48,19 @@ public class SpawnDeadly : MonoBehaviour
 
             yield return new WaitForSeconds(spawnrate);
             Spawn();
-            yield return new WaitForSeconds(1);
-            Spawn();
+            // yield return new WaitForSeconds(1);
+            // Spawn();
         }
     }
+
+    IEnumerator SpawnMore(int steps = 50)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(steps);
+            StartCoroutine(NextSpawn());
+        }
+    }
+
+
 }

@@ -14,7 +14,6 @@ public class LeftRightMechanic : MonoBehaviour
     [SerializeField] private float max_speed;
     [SerializeField] private int direction = 1;
 
-    public float initscore = 0;
     public float force;
 
 
@@ -31,10 +30,10 @@ public class LeftRightMechanic : MonoBehaviour
         Debug.Log("Test " + Mathf.Cos(Mathf.PI / 2));
         Debug.Log("Height " + Camera.main.pixelHeight);
         Debug.Log("Screen to world " + radius);
-        max_speed = 10;
         current_speed = 0;
 
         logic = GameObject.FindGameObjectWithTag("Stats").GetComponent<Stats>();
+        StartCoroutine(ConstantScore());
     }
 
     // Update is called once per frame
@@ -42,8 +41,7 @@ public class LeftRightMechanic : MonoBehaviour
     {
         gravitySourcePos = gravitySource.transform.position;
         direction = transform.position.x >= gravitySourcePos.x ? 1 : -1;
-        accel = 2 * direction;
-        // direction *= 2;
+        accel = direction;
 
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
@@ -55,21 +53,15 @@ public class LeftRightMechanic : MonoBehaviour
             accel += force;
         }
 
-        // current_speed += accel * Time.deltaTime / 2;
-        // transform.position += new Vector3(current_speed, 0, 0);
-
-        initscore += Time.deltaTime;
-        if ((int)initscore == 1)
+        current_speed += accel;
+        if (MathF.Abs(current_speed) > max_speed)
         {
-            initscore = 0;
-            logic.Add1Score();
+            current_speed = current_speed < 0 ? max_speed * -1 : max_speed;
         }
-    }
 
-    void FixedUpdate()
-    {
-        current_speed += accel * Time.deltaTime;
-        transform.position += new Vector3(current_speed, 0, 0);
+
+        transform.position += new Vector3(current_speed * Time.deltaTime, 0, 0);
+
     }
 
 
@@ -77,6 +69,15 @@ public class LeftRightMechanic : MonoBehaviour
     {
         logic.GameOver();
         gameObject.SetActive(false);
+    }
+
+    IEnumerator ConstantScore()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            logic.Add1Score();
+        }
     }
 
 }
