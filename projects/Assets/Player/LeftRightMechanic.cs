@@ -41,7 +41,7 @@ public class LeftRightMechanic : MonoBehaviour
     {
         gravitySourcePos = gravitySource.transform.position;
         direction = transform.position.x >= gravitySourcePos.x ? 1 : -1;
-        accel = direction;
+        accel = direction * force / 5;
 
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {

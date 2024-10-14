@@ -1284,7 +1284,7 @@ MonoBehaviour:
   current_speed: 0
   max_speed: 250
   direction: 0
-  force: 10
+  force: 50
   gravitySource: {fileID: 2092611344}
   gravitySourcePos: {x: 0, y: 0, z: 0}
   rig2d: {fileID: 0}

@@ -352,8 +352,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 530, y: -61}
-  m_SizeDelta: {x: 939.959, y: 463.90002}
+  m_AnchoredPosition: {x: 545.98016, y: 0}
+  m_SizeDelta: {x: 907.9987, y: 659.422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &895478621
 MonoBehaviour:
@@ -378,20 +378,20 @@ MonoBehaviour:
   m_text: 'How to play
 
 
-    - You will automatically slide away from the purple
-    line
+    - You will automatically slide away from the green line
 
-    - The purple line will move periodically
+    -
+    The green line will move periodically
 
 
-    -Press A or Left Arrow
-    to move to the left
+    -Press A or Left Arrow to move to
+    the left
 
     -Press D or Right Arrow to move to the right
 
 
-    -Avoid
-    the falling red things
+    -Avoid the falling
+    red things
 
     -Make sure to stay visible on the screen'
   m_isRightToLeft: 0
