@@ -2,6 +2,8 @@ services:
   elysia:
     image: "oven/bun:latest"
     container_name: "elysia_unity"
+    depends_on:
+      - admin_ely
     restart: "unless-stopped"
     networks:
       - dev-proxy
@@ -26,9 +28,48 @@ services:
       - "traefik.docker.network=dev-proxy"
 
   postgres:
+    image: postgres:16.4-bullseye
+    container_name: gamedb
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASS}
+      - POSTGRES_DB=elysia
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_HOST_AUTH_METHOD
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    networks:
+      - db-net
+
+  adminer:
+    image: dockette/adminer:pgsql
+    container_name: admin_ely
+    depends_on:
+      - gamedb
+    restart: always
+    environment:
+      - UPLOAD=4096M
+      - MEMORY=128M
+    networks:
+      - dev-proxy
+      - db-net
+    labels:
+      - "traefik.http.routers.adminer-http.entrypoints=web"
+      - "traefik.http.routers.adminer-http.rule=Host(`admin_ely.docker.localhost`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=80"
+      # - "traefik.http.routers.adminer-http.middlewares=adminer-https"
+      # - "traefik.http.middlewares.adminer-https.redirectscheme.scheme=https"
+      # - "traefik.http.routers.adminer.entrypoints=websecure"
+      # - "traefik.http.routers.adminer.rule=Host(`adminer.docker.localhost`)"
+      # - "traefik.http.routers.adminer.tls=true"
+      - "traefik.docker.network=dev-proxy"
 
 networks:
   dev-proxy:
     external: true
+  db-net:
+    driver: bridge
 # volumes:
 #   data:
