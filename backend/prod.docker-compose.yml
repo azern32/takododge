@@ -3,19 +3,30 @@ services:
     image: "oven/bun:latest"
     container_name: "elysia_unity"
     depends_on:
-      - admin_ely
+      - adminer
     restart: "unless-stopped"
     networks:
       - dev-proxy
+      - db-net
     # override default entrypoint allows us to do `bun install` before serving
     entrypoint: []
     # execute bun install before we start the dev server in watch mode
-    command: "/bin/sh -c 'bun install && bun run --watch src/index.ts'"
+    command: "/bin/sh -c
+      'bun install
+      && bun build
+      --compile
+      --minify-whitespace
+      --minify-syntax
+      --target bun
+      --outfile server
+      ./src/index.ts
+      && ./server'"
     # setup a host mounted volume to sync changes to the container
     volumes:
       - "./app:/home/bun/app"
     # expose the right ports
     # ports: ["7777:3000"]
+    env_file: ".env"
     labels:
       - "traefik.http.routers.elysia-http.entrypoints=web"
       - "traefik.http.routers.elysia-http.rule=Host(`elysia.docker.localhost`)"
@@ -37,7 +48,7 @@ services:
       - POSTGRES_PASSWORD=${PASS}
       - POSTGRES_DB=elysia
       - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_HOST_AUTH_METHOD
+      # - POSTGRES_HOST_AUTH_METHOD
     volumes:
       - ./db/data:/var/lib/postgresql/data
     networks:
@@ -47,7 +58,7 @@ services:
     image: dockette/adminer:pgsql
     container_name: admin_ely
     depends_on:
-      - gamedb
+      - postgres
     restart: always
     environment:
       - UPLOAD=4096M
