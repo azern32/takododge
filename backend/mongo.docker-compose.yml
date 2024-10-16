@@ -2,19 +2,46 @@ name: mongoshits
 
 services:
   mongo:
-    image: mongo
+    image: mongo:8.0.1-noble
+    container_name: mongodb
     restart: always
+    volumes:
+      - ./mongodata:/data/db
+    ports:
+      - 2345:27017
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_ROOT_USERNAME=${USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${PASS}
+    networks:
+      - dbnet
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1-18
     restart: always
-    ports:
-      - 8081:8081
+    container_name: mongopanel
+    depends_on:
+      - mongo
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=example
-      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017/
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${USER}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${PASS}
+      - ME_CONFIG_MONGODB_URL=mongodb://${USER}:${PASS}@mongodb/
       - ME_CONFIG_BASICAUTH=false
+    labels:
+      - "traefik.http.routers.express-http.entrypoints=web"
+      - "traefik.http.routers.express-http.rule=Host(`express.docker.localhost`)"
+      - "traefik.http.services.express.loadbalancer.server.port=8081"
+      # - "traefik.http.routers.express-http.middlewares=express-https"
+      # - "traefik.http.middlewares.express-https.redirectscheme.scheme=https"
+      # - "traefik.http.routers.express.entrypoints=websecure"
+      # - "traefik.http.routers.express.rule=Host(`express.docker.localhost`)"
+      # - "traefik.http.routers.express.tls=true"
+      - "traefik.docker.network=dev-proxy"
+    networks:
+      - dbnet
+      - dev-proxy
+
+networks:
+  dev-proxy:
+    external: true
+  dbnet:
+    driver: bridge
