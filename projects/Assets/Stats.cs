@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEditor.SearchService;
-using System;
-using Unity.VisualScripting;
 public class Stats : MonoBehaviour
 {
     public int playerScore = 0;
