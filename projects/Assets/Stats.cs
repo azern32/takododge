@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
+using System;
+using Unity.VisualScripting;
 public class Stats : MonoBehaviour
 {
     public int playerScore = 0;
@@ -11,6 +14,7 @@ public class Stats : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI fpsText;
     public GameObject gameoverScreen;
+    public GameObject pauseScreen;
 
     [ContextMenu("Score +1")] public void Add1Score() { AddScore(1); }
 
@@ -28,12 +32,23 @@ public class Stats : MonoBehaviour
         // GameObject.FindGameObjectWithTag("Player").gameObject.SetActive(true);
     }
 
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        pauseScreen.SetActive(true);
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1;
+        pauseScreen.SetActive(false);
+    }
+
     public void GameOver()
     {
         gameoverScreen.SetActive(true);
         Time.timeScale = 0;
     }
-
     public void Mainmenu()
     {
         SceneManager.LoadScene("Main Menu");
@@ -43,5 +58,15 @@ public class Stats : MonoBehaviour
     {
         fps = Mathf.Round(1 / Time.unscaledDeltaTime);
         fpsText.text = fps.ToString();
+
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Escape))
+        {
+            if (!pauseScreen.activeSelf)
+            {
+                Pause();
+            }
+        }
     }
+
+
 }
